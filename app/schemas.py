@@ -51,7 +51,6 @@ class UsuarioUpdate(InputModel):
 
 
 class EstudianteCreate(InputModel):
-    usuario_id: str
     edad: int
     institucion_educativa: str
     correo_institucional: str
@@ -64,7 +63,6 @@ class EstudianteCreate(InputModel):
 
 
 class EstudianteUpdate(InputModel):
-    usuario_id: str | None = None
     edad: int | None = None
     institucion_educativa: str | None = None
     correo_institucional: str | None = None
@@ -77,7 +75,6 @@ class EstudianteUpdate(InputModel):
 
 
 class EmpresaCreate(InputModel):
-    usuario_id: str
     nombre_publico: str
     tipo_actividad_sector: str
     descripcion: str
@@ -95,7 +92,6 @@ class EmpresaCreate(InputModel):
 
 
 class EmpresaUpdate(InputModel):
-    usuario_id: str | None = None
     nombre_publico: str | None = None
     tipo_actividad_sector: str | None = None
     descripcion: str | None = None
@@ -113,14 +109,12 @@ class EmpresaUpdate(InputModel):
 
 
 class UsuarioGeneralCreate(InputModel):
-    usuario_id: str
     pais_ciudad_zona: str
     areas_interes: str
     solicitud_servicio: bool
 
 
 class UsuarioGeneralUpdate(InputModel):
-    usuario_id: str | None = None
     pais_ciudad_zona: str | None = None
     areas_interes: str | None = None
     solicitud_servicio: bool | None = None

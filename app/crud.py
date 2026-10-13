@@ -6,9 +6,12 @@ from pydantic import BaseModel
 from pymongo.collection import Collection
 
 
-def parse_object_id(value: str) -> ObjectId:
+def parse_object_id(value: str, field: str = "Identificador") -> ObjectId:
     if not ObjectId.is_valid(value):
-        raise HTTPException(status_code=400, detail="Identificador no valido")
+        raise HTTPException(
+            status_code=400,
+            detail=f"{field} debe ser un ObjectId valido de MongoDB (24 caracteres hexadecimales)",
+        )
     return ObjectId(value)
 
 
@@ -88,7 +91,7 @@ def validate_reference(
     source_collection: Collection,
     current_document_id: ObjectId | None = None,
 ):
-    object_id = parse_object_id(reference_id)
+    object_id = parse_object_id(reference_id, "usuario_id")
     if target_collection.find_one({"_id": object_id}) is None:
         raise HTTPException(status_code=404, detail="Usuario relacionado no encontrado")
 

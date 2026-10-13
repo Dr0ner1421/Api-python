@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Query
 
 from app.crud import (
-    create_linked_document,
+    create_document,
     delete_document,
     get_document,
     list_documents,
-    update_linked_document,
+    update_document,
 )
 from app.database import get_collection
 from app.schemas import EmpresaCreate, EmpresaUpdate
@@ -15,12 +15,11 @@ router = APIRouter(
     tags=["Empresas y micro negocios"],
 )
 collection = get_collection("empresas_micro_negocios")
-users = get_collection("usuarios")
 
 
 @router.post("", status_code=201)
 def create_empresa(payload: EmpresaCreate):
-    return create_linked_document(collection, users, payload)
+    return create_document(collection, payload)
 
 
 @router.get("")
@@ -35,7 +34,7 @@ def get_empresa(item_id: str):
 
 @router.patch("/{item_id}")
 def update_empresa(item_id: str, payload: EmpresaUpdate):
-    return update_linked_document(collection, users, item_id, payload)
+    return update_document(collection, item_id, payload)
 
 
 @router.delete("/{item_id}")
