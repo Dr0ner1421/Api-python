@@ -136,3 +136,23 @@ class SolicitudUpdate(InputModel):
     categoria: str | None = None
     zona_general: str | None = None
     fecha_plazo_aproximado: str | None = None
+
+
+class BusquedaHeuristicaRequest(InputModel):
+    inicio: str = Field(min_length=1)
+    objetivo: str = Field(min_length=1)
+
+
+class NodoVisitado(InputModel):
+    nodo: str
+    heuristica_minutos: float
+
+
+class BusquedaHeuristicaResponse(InputModel):
+    algoritmo: str
+    encontrada: bool
+    inicio: str
+    objetivo: str
+    ruta: list[str]
+    nodos_visitados: list[NodoVisitado]
+    mensaje: str
