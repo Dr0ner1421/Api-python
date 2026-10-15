@@ -1,17 +1,30 @@
 from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+from app.constantes.swaggercostantes import (
+    ACTUALIZAR_EMPRESA,
+    ACTUALIZAR_ESTUDIANTE,
+    ACTUALIZAR_SOLICITUD,
+    ACTUALIZAR_USUARIO,
+    ACTUALIZAR_USUARIO_GENERAL,
+    REGISTRAR_EMPRESA,
+    REGISTRAR_ESTUDIANTE,
+    REGISTRAR_SOLICITUD,
+    REGISTRAR_USUARIO,
+    REGISTRAR_USUARIO_GENERAL,
+)
 
 class InputModel(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
 
-class UsuarioCreate(InputModel):
+
+
+class UsuarioResponse(InputModel):
+    id: str
     tipo_cuenta: str
     nombres: str
     apellidos: str
     correo: str
-    contrasena: str = Field(min_length=8)
-    confirmar_contrasena: str
     telefono: str
     pais_ciudad: str
     foto_perfil: str
@@ -20,11 +33,28 @@ class UsuarioCreate(InputModel):
     correo_verificado: bool
     correo_recuperacion: str
 
-    @model_validator(mode="after")
-    def validate_password_confirmation(self):
-        if self.contrasena != self.confirmar_contrasena:
-            raise ValueError("Las contraseñas no coinciden")
-        return self
+
+class UsuarioCreate(InputModel):
+    tipo_cuenta: str
+    nombres: str
+    apellidos: str
+    correo: str
+    contrasena: str = Field(min_length=8)
+    telefono: str
+    pais_ciudad: str
+    foto_perfil: str
+    acepta_terminos: bool
+    recibe_avisos: bool
+    correo_verificado: bool
+    correo_recuperacion: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": REGISTRAR_USUARIO
+        }
+    )
+
+
 
 
 class UsuarioUpdate(InputModel):
@@ -42,6 +72,8 @@ class UsuarioUpdate(InputModel):
     correo_verificado: bool | None = None
     correo_recuperacion: str | None = None
 
+    model_config = ConfigDict(json_schema_extra={"example": ACTUALIZAR_USUARIO})
+
     @model_validator(mode="after")
     def validate_password_confirmation(self):
         if self.contrasena is not None or self.confirmar_contrasena is not None:
@@ -51,6 +83,7 @@ class UsuarioUpdate(InputModel):
 
 
 class EstudianteCreate(InputModel):
+    usuario_id: str
     edad: int
     institucion_educativa: str
     correo_institucional: str
@@ -60,6 +93,8 @@ class EstudianteCreate(InputModel):
     catalogo_url: str
     modalidad: bool = Field(alias="Modalidad")
     disponibilidad_horarios: str
+
+    model_config = ConfigDict(json_schema_extra={"example": REGISTRAR_ESTUDIANTE})
 
 
 class EstudianteUpdate(InputModel):
@@ -73,8 +108,11 @@ class EstudianteUpdate(InputModel):
     modalidad: bool | None = Field(default=None, alias="Modalidad")
     disponibilidad_horarios: str | None = None
 
+    model_config = ConfigDict(json_schema_extra={"example": ACTUALIZAR_ESTUDIANTE})
+
 
 class EmpresaCreate(InputModel):
+    usuario_id: str
     nombre_publico: str
     tipo_actividad_sector: str
     descripcion: str
@@ -89,6 +127,8 @@ class EmpresaCreate(InputModel):
     modalidad: str
     representacion_legitimidad: bool
     nombre_representante: str
+
+    model_config = ConfigDict(json_schema_extra={"example": REGISTRAR_EMPRESA})
 
 
 class EmpresaUpdate(InputModel):
@@ -107,17 +147,27 @@ class EmpresaUpdate(InputModel):
     representacion_legitimidad: bool | None = None
     nombre_representante: str | None = None
 
+    model_config = ConfigDict(json_schema_extra={"example": ACTUALIZAR_EMPRESA})
+
 
 class UsuarioGeneralCreate(InputModel):
+    usuario_id: str
     pais_ciudad_zona: str
     areas_interes: str
     solicitud_servicio: bool
 
+    model_config = ConfigDict(json_schema_extra={"example": REGISTRAR_USUARIO_GENERAL})
+
 
 class UsuarioGeneralUpdate(InputModel):
+    usuario_id: str | None = None
     pais_ciudad_zona: str | None = None
     areas_interes: str | None = None
     solicitud_servicio: bool | None = None
+
+    model_config = ConfigDict(
+        json_schema_extra={"example": ACTUALIZAR_USUARIO_GENERAL}
+    )
 
 
 class SolicitudCreate(InputModel):
@@ -128,6 +178,8 @@ class SolicitudCreate(InputModel):
     zona_general: str
     fecha_plazo_aproximado: str
 
+    model_config = ConfigDict(json_schema_extra={"example": REGISTRAR_SOLICITUD})
+
 
 class SolicitudUpdate(InputModel):
     usuario_id: str | None = None
@@ -137,22 +189,4 @@ class SolicitudUpdate(InputModel):
     zona_general: str | None = None
     fecha_plazo_aproximado: str | None = None
 
-
-class BusquedaHeuristicaRequest(InputModel):
-    inicio: str = Field(min_length=1)
-    objetivo: str = Field(min_length=1)
-
-
-class NodoVisitado(InputModel):
-    nodo: str
-    heuristica_minutos: float
-
-
-class BusquedaHeuristicaResponse(InputModel):
-    algoritmo: str
-    encontrada: bool
-    inicio: str
-    objetivo: str
-    ruta: list[str]
-    nodos_visitados: list[NodoVisitado]
-    mensaje: str
+    model_config = ConfigDict(json_schema_extra={"example": ACTUALIZAR_SOLICITUD})

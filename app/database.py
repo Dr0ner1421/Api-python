@@ -11,9 +11,6 @@ client = MongoClient(
 )
 database = client[os.getenv("MONGODB_DATABASE", "proyecto")]
 
-HEURISTIC_NODES_COLLECTION = "grafo_heuristico_nodos"
-HEURISTIC_CONNECTIONS_COLLECTION = "grafo_heuristico_conexiones"
-
 
 def get_collection(name: str):
     return database[name]

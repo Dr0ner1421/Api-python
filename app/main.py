@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 
 from app.routers import (
-    busquedas,
     empresas,
     estudiantes,
     solicitudes,
@@ -20,4 +19,3 @@ app.include_router(estudiantes.router)
 app.include_router(empresas.router)
 app.include_router(usuarios_generales.router)
 app.include_router(solicitudes.router)
-app.include_router(busquedas.router)
