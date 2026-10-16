@@ -56,9 +56,14 @@ def list_empresas(limit: int = Query(default=100, ge=1, le=500)):
     )
 
 
-@router.get("/{item_id}", summary="Consultar empresa por ID")
+@router.get(
+        "/{item_id}", 
+        summary="Consultar empresa por ID")
+
 def get_empresa(item_id: str):
+
     company = get_document(collection, item_id)
+
     return include_related_document(
         company,
         users,
@@ -67,9 +72,14 @@ def get_empresa(item_id: str):
     )
 
 
-@router.patch("/{item_id}", summary="Actualizar perfil de empresa")
+@router.patch(
+        "/{item_id}", 
+        summary="Actualizar perfil de empresa")
+
 def update_empresa(item_id: str, payload: EmpresaUpdate):
+    
     company = update_document(collection, item_id, payload)
+
     return include_related_document(
         company,
         users,
@@ -78,6 +88,10 @@ def update_empresa(item_id: str, payload: EmpresaUpdate):
     )
 
 
-@router.delete("/{item_id}", summary="Eliminar perfil de empresa")
+@router.delete(
+        "/{item_id}", 
+        summary="Eliminar perfil de empresa")
+
 def delete_empresa(item_id: str):
+    
     return delete_document(collection, item_id)

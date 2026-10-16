@@ -6,6 +6,7 @@ from app.routers import (
     solicitudes,
     usuarios,
     usuarios_generales,
+    recomendaciones,
 )
 
 app = FastAPI(
@@ -19,3 +20,4 @@ app.include_router(estudiantes.router)
 app.include_router(empresas.router)
 app.include_router(usuarios_generales.router)
 app.include_router(solicitudes.router)
+app.include_router(recomendaciones.router)

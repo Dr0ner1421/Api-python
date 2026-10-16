@@ -1,4 +1,5 @@
 from pydantic import BaseModel, ConfigDict, Field, model_validator
+from typing import Literal
 
 from app.constantes.swaggercostantes import (
     ACTUALIZAR_EMPRESA,
@@ -17,6 +18,21 @@ class InputModel(BaseModel):
     model_config = ConfigDict(extra="forbid", populate_by_name=True)
 
 
+class Preferencias(BaseModel):
+    precio: int = Field(ge=1, le=10)
+    calidad: int = Field(ge=1, le=10)
+
+
+
+class SolicitudRecomendacion(BaseModel):
+    categoria: str
+
+    preferencias: Preferencias
+
+    metodo: Literal[
+        "manhattan",
+        "euclidiana"
+    ] = "euclidiana"
 
 
 class UsuarioResponse(InputModel):
